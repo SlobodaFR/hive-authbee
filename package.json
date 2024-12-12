@@ -1,0 +1,13 @@
+{
+  "name": "@slobodafr/hive-auth-bee",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": {
+    "name": "Thomas SLOBODA",
+    "email": "thomas@sloboda.fr"
+  },
+  "scripts": {},
+  "keywords": [],
+  "license": "ISC",
+  "description": ""
+}
