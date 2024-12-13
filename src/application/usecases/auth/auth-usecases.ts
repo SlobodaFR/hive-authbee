@@ -1,0 +1,64 @@
+import {Logger} from "../../../ports/output/logger";
+import {
+    GetVerifyTokenParams,
+    GetVerifyTokenResult,
+    ValidateVerifyTokenParams,
+    ValidateVerifyTokenResult
+} from "./types";
+import {ERRORS} from "./constants";
+import {UserRepository} from "../../repositories/user";
+import {EmailValidator} from "../../../ports/input/email-validator";
+import {TokenRepository} from "../../repositories/token";
+
+export class AuthUseCases {
+    constructor(
+        private readonly logger: Logger,
+        private readonly emailValidator: EmailValidator,
+        private readonly userRepository: UserRepository,
+        private readonly tokenRepository: TokenRepository
+    ) {
+    }
+
+    async getVerifyToken({email}: GetVerifyTokenParams): Promise<GetVerifyTokenResult | null> {
+        const isValidEmail = await this.emailValidator.isValid(email);
+
+        if (!isValidEmail) {
+            this.logger.error(`getVerifyToken: ${ERRORS.VALID_EMAIL_REQUIRED}`);
+            throw new Error(`getVerifyToken: ${ERRORS.VALID_EMAIL_REQUIRED}`);
+        }
+
+        const user = await this.userRepository.upsert(email);
+
+        const savedToken = await this.tokenRepository.renewForUserAndType(user.id, "VERIFY");
+
+        this.logger.info('getVerifyToken: token generated and saved');
+        return {
+            token: savedToken.value
+        };
+    }
+
+    async validateVerifyToken({token}: ValidateVerifyTokenParams): Promise<ValidateVerifyTokenResult> {
+        try {
+            const tokenData = await this.tokenRepository.getByValue(token);
+
+            if (!tokenData?.user?.id) {
+                this.logger.error(`validateVerifyToken: ${ERRORS.UNKNOWN_TOKEN}`);
+                throw new Error(`validateVerifyToken: ${ERRORS.UNKNOWN_TOKEN}`);
+            }
+
+            const savedToken = await this.tokenRepository.renewForUserAndType(tokenData.user.id, "ACCESS");
+
+            this.logger.info('validateVerifyToken: token validated');
+            return {
+                token: savedToken.value,
+                expiresAt: savedToken.expiresAt,
+                userId: tokenData.user.id
+            };
+            
+        } catch (error) {
+            this.logger.error(`validateVerifyToken: ${ERRORS.UNKNOWN_TOKEN}`);
+            throw new Error(`validateVerifyToken: ${ERRORS.UNKNOWN_TOKEN}`);
+        }
+
+    }
+}
