@@ -4,3 +4,4 @@ logs
 node_modules
 unit-coverage
 readme.md
+.trunk
