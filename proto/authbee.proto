@@ -1,0 +1,26 @@
+syntax = "proto3";
+
+package hive;
+
+service AuthBee {
+  rpc GetVerifyToken (VerifyTokenRequest) returns (VerifyTokenResponse) {}
+  rpc ValidateVerifyToken (ValidateVerifyTokenRequest) returns (ValidateVerifyTokenResponse) {}
+}
+
+message VerifyTokenRequest {
+  string email = 1;
+}
+
+message VerifyTokenResponse {
+  string token = 1;
+}
+
+message ValidateVerifyTokenRequest {
+  string token = 1;
+}
+
+message ValidateVerifyTokenResponse {
+  string token = 1;
+  int64 expiresAt = 2;
+  string userId = 3;
+}

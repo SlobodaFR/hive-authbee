@@ -6,7 +6,6 @@ export class WinstonLogger implements Logger {
 
     constructor(context: string) {
         this.transport = winston.createLogger({
-            level: '*',
             format: winston.format.json(),
             defaultMeta: {service: context},
             transports: [
