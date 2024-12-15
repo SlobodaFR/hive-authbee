@@ -5,6 +5,7 @@ package hive;
 service AuthBee {
   rpc GetVerifyToken (VerifyTokenRequest) returns (VerifyTokenResponse) {}
   rpc ValidateVerifyToken (ValidateVerifyTokenRequest) returns (ValidateVerifyTokenResponse) {}
+  rpc RevokeAccessToken (RevokeAccessTokenRequest) returns (RevokeAccessTokenResponse) {}
 }
 
 message VerifyTokenRequest {
@@ -23,4 +24,12 @@ message ValidateVerifyTokenResponse {
   string token = 1;
   int64 expiresAt = 2;
   string userId = 3;
+}
+
+message RevokeAccessTokenRequest {
+  string token = 1;
+}
+
+message RevokeAccessTokenResponse {
+  bool success = 1;
 }

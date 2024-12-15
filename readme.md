@@ -7,7 +7,7 @@ This is a simple authentication service that uses passwordless mechanism to auth
 - [x] Passwordless authentication
 - [x] User registration
 - [x] User login
-- [ ] User logout
+- [x] User logout
 - [ ] ...
 
 ## Getting Started

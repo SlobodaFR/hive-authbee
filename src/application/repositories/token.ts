@@ -1,8 +1,10 @@
-import {Token} from "../domains/token";
-import {TokenType} from "../domains/token-type";
+import { Token } from "../domains/token";
+import { TokenType } from "../domains/token-type";
 
 export interface TokenRepository {
-    renewForUserAndType(userId: string, tokenType: TokenType): Promise<Token>;
+  renewForUserAndType(userId: string, tokenType: TokenType): Promise<Token>;
 
-    getByValue(value: string): Promise<Token | null>;
+  getByValue(value: string): Promise<Token | null>;
+
+  revokeToken(token: string, tokenType: TokenType): Promise<boolean>;
 }

@@ -39,7 +39,7 @@
     "@grpc/proto-loader": "^0.7.13",
     "@prisma/client": "^6.0.1",
     "dotenv": "^16.4.7",
-    "grpc-js-health-check": "^1.2.2",
+    "grpc-health-check": "^2.0.2",
     "prisma": "^6.0.1",
     "rate-limiter-flexible": "^5.0.4",
     "winston": "^3.17.0",
